@@ -1,6 +1,7 @@
 #include <nbs.hpp>
 #include <cstdint>
 #include <string>
+#include <stdexcept>
 
 int8_t read_byte(std::istream &stream)
 {
@@ -35,6 +36,11 @@ std::string read_pstring(std::istream &stream)
 NBS::SongData::SongData(std::istream &stream)
 {
     length = read_short(stream);
+    if (length == 0)
+    {
+        throw std::runtime_error("Non-classic NBS files are not supported."); // TODO: Implement non-classic NBS files
+    }
+
     height = read_short(stream);
     name = read_pstring(stream);
     author = read_pstring(stream);
