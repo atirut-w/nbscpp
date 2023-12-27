@@ -46,4 +46,14 @@ NBS::SongData::SongData(std::istream &stream)
     author = read_pstring(stream);
     original_author = read_pstring(stream);
     description = read_pstring(stream);
+    tempo = read_short(stream) / 100.0f;
+    autosave = read_byte(stream);
+    autosave_duration = read_byte(stream);
+    time_signature = read_byte(stream);
+    minutes_spent = read_int(stream);
+    left_clicks = read_int(stream);
+    right_clicks = read_int(stream);
+    blocks_added = read_int(stream);
+    blocks_removed = read_int(stream);
+    midi_file_name = read_pstring(stream);
 };
