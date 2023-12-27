@@ -56,4 +56,41 @@ NBS::SongData::SongData(std::istream &stream)
     blocks_added = read_int(stream);
     blocks_removed = read_int(stream);
     midi_file_name = read_pstring(stream);
+
+    layers.resize(height + 1);
+    for (Layer &layer : layers)
+    {
+        layer.notes.resize(length + 1);
+    }
+
+    for(int tick = -1;;)
+    {
+        int tjumps = read_short(stream);
+        if (tjumps == 0)
+        {
+            break;
+        }
+        tick += tjumps;
+
+        for (int layer = -1;;)
+        {
+            int ljumps = read_short(stream);
+            if (ljumps == 0)
+            {
+                break;
+            }
+            layer += ljumps;
+
+            int instrument = read_byte(stream);
+            int key = read_byte(stream);
+
+            // Learned the weird way: length and layer count cannot be trusted
+            if (layers.size() <= layer)
+                layers.resize(layer + 1);
+            if (layers[layer].notes.size() <= tick)
+                layers[layer].notes.resize(tick + 1);
+
+            layers[layer].notes[tick].instrument = instrument;
+        }
+    }
 };

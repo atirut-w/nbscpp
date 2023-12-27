@@ -1,9 +1,25 @@
 #pragma once
 #include <istream>
 #include <string>
+#include <vector>
 
 namespace NBS
 {
+    class Note
+    {
+    public:
+        int instrument;
+        int key;
+    };
+
+    class Layer
+    {
+    public:
+        std::string name;
+        int volume;
+        std::vector<Note> notes;
+    };
+    
     class SongData
     {
     public:
@@ -25,5 +41,7 @@ namespace NBS
         int blocks_added;
         int blocks_removed;
         std::string midi_file_name;
+
+        std::vector<Layer> layers;
     };
 }
